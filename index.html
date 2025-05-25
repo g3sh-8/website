@@ -6,6 +6,10 @@
   <title>Gesh Tech Ltd.</title>
   <link href="https://fonts.googleapis.com/css2?family=Unica+One&family=Roboto+Mono&display=swap" rel="stylesheet">
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -17,10 +21,11 @@
       background-color: #0d0d0d;
       color: #e0e0e0;
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
     header {
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -39,7 +44,7 @@
     }
 
     header p {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       color: #bbbbbb;
       max-width: 600px;
     }
@@ -48,6 +53,15 @@
       padding: 4rem 2rem;
       max-width: 800px;
       margin: auto;
+      border-top: 1px solid #222;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease-out;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     section h2 {
@@ -98,7 +112,7 @@
   </section>
 
   <section>
-    <h2>Our Focus</h2>
+    <h2>What We Do</h2>
     <p>
       • Custom software development<br>
       • Scalable cloud infrastructure<br>
@@ -108,7 +122,7 @@
   </section>
 
   <section>
-    <h2>Get In Touch</h2>
+    <h2>Contact</h2>
     <p>
       Reach out to us at <a href="mailto:contact@geshtech.com">contact@geshtech.com</a> — whether you need a solution, a consultation, or just want to connect with a team that gets things done.
     </p>
@@ -117,6 +131,25 @@
   <footer>
     © 2025 Gesh Tech Ltd. | All rights reserved.
   </footer>
+
+  <script>
+    // Fade-in on scroll
+    const sections = document.querySelectorAll('section');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.5
+    });
+
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+  </script>
 
 </body>
 </html>
