@@ -1,99 +1,122 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Home Project</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gesh Tech Ltd.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Unica+One&family=Roboto+Mono&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto Mono', monospace;
+      background-color: #0d0d0d;
+      color: #e0e0e0;
+      line-height: 1.6;
+    }
+
+    header {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+      text-align: center;
+      padding: 0 2rem;
+    }
+
+    header h1 {
+      font-family: 'Unica One', cursive;
+      font-size: 3.2rem;
+      color: #ffffff;
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      font-size: 1.3rem;
+      color: #bbbbbb;
+      max-width: 600px;
+    }
+
+    section {
+      padding: 4rem 2rem;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #c9c9c9;
+    }
+
+    section p {
+      margin-bottom: 1rem;
+      color: #999;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #666;
+      border-top: 1px solid #222;
+    }
+
+    a {
+      color: #9a7cff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: #c2a8ff;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans">
-    <!-- Header -->
-    <header class="bg-blue-600 text-white p-4">
-        <nav class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">My Home Project</h1>
-            <ul class="flex space-x-4">
-                <li><a href="#home" class="hover:underline">Home</a></li>
-                <li><a href="#about" class="hover:underline">About</a></li>
-                <li><a href="#contact" class="hover:underline">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+<body>
 
-    <!-- Hero Section -->
-    <section id="home" class="bg-white py-20">
-        <div class="container mx-auto text-center">
-            <h2 class="text-4xl font-bold mb-4">Welcome to My Home Project</h2>
-            <p class="text-lg text-gray-600 mb-6">A place to showcase my passion project. Explore and get in touch!</p>
-            <a href="#contact" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">Get Started</a>
-        </div>
-    </section>
+  <header>
+    <h1>GESH TECH LTD.</h1>
+    <p>Innovating in the shadows, delivering in the light.</p>
+  </header>
 
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-gray-50">
-        <div class="container mx-auto text-center">
-            <h2 class="text-3xl font-bold mb-4">About This Project</h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                This is a sample website for my home project. Feel free to customize this section with details about your project, its purpose, and what makes it unique.
-            </p>
-        </div>
-    </section>
+  <section>
+    <h2>Who We Are</h2>
+    <p>
+      Gesh Tech Ltd. is a forward-thinking technology firm blending innovation with precision. We design digital tools and systems that operate seamlessly — even when no one's looking.
+    </p>
+    <p>
+      Whether it's bespoke software, infrastructure automation, or stealthy backend systems, we craft solutions with clarity and elegance.
+    </p>
+  </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 bg-white">
-        <div class="container mx-auto text-center">
-            <h2 class="text-3xl font-bold mb-4">Get in Touch</h2>
-            <p class="text-lg text-gray-600 mb-6">Have questions or want to collaborate? Reach out!</p>
-            <div class="max-w-md mx-auto">
-                <input type="text" placeholder="Your Name" class="w-full p-3 mb-4 border rounded-lg">
-                <input type="email" placeholder="Your Email" class="w-full p-3 mb-4 border rounded-lg">
-                <textarea placeholder="Your Message" class="w-full p-3 mb-4 border rounded-lg" rows="4"></textarea>
-                <button class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">Send Message</button>
-            </div>
-        </div>
-    </section>
+  <section>
+    <h2>Our Focus</h2>
+    <p>
+      • Custom software development<br>
+      • Scalable cloud infrastructure<br>
+      • Automation and DevOps strategies<br>
+      • Digital consulting for startups and enterprises
+    </p>
+  </section>
 
-    <!-- Footer -->
-    <footer class="bg-blue-600 text-white p-4 text-center">
-        <p>&copy; 2025 My Home Project. All rights reserved.</p>
-    </footer>
+  <section>
+    <h2>Get In Touch</h2>
+    <p>
+      Reach out to us at <a href="mailto:contact@geshtech.com">contact@geshtech.com</a> — whether you need a solution, a consultation, or just want to connect with a team that gets things done.
+    </p>
+  </section>
+
+  <footer>
+    © 2025 Gesh Tech Ltd. | All rights reserved.
+  </footer>
+
 </body>
 </html>
